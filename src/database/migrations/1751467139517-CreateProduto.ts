@@ -13,6 +13,21 @@ export class CreateProduto1751467139517 implements MigrationInterface {
                         isPrimary: true,
                         isGenerated: true,
                         generationStrategy: "increment"
+                    },
+                    {
+                        name: 'nome',
+                        type: 'varchar',
+                        length: '100'
+                    },
+                    {
+                        name: 'preco',
+                        type: 'decimal',
+                        precision: 10,
+                        scale: 2
+                    },
+                    {
+                        name: 'descicao',
+                        type: 'text'                
                     }
                 ]
             })
@@ -20,6 +35,7 @@ export class CreateProduto1751467139517 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropTable("produtos")
     }
 
 }
