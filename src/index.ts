@@ -7,7 +7,7 @@ import { AppDataSource } from "./database/data-source";
 require('dotenv').config()
 const cors = require('cors')
 
-
+//tt
 AppDataSource.initialize()
 .then(() => {
         const app = express()
