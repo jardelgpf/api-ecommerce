@@ -19,7 +19,10 @@ export const UsuarioService    = {
         data.password = await bcrypt.hash(data.password, saltRounds)
         const user = repo.create(data)
         await repo.save(user)
-        return user
+        //consultar o usuario criado
+        const newUser = await repo.findOne({
+            where: {id: user.id}
+        })
     },
 
     async update(id : number, data: Partial<Usuario>): Promise<Usuario | null>{
