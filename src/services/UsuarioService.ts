@@ -5,6 +5,12 @@ const saltRounds = 10
 
 const repo = AppDataSource.getRepository(Usuario)
 
+type UsuarioRetorno = {
+    id: number,
+    nome: string,
+    email: string
+}
+
 export const UsuarioService    = {
 
     async getAll() : Promise<Usuario[]>{
@@ -15,14 +21,21 @@ export const UsuarioService    = {
         return await repo.findOneBy({ id })
     },
 
-    async create(data: Partial<Usuario>) : Promise<Usuario>{
+    async create(data: Partial<Usuario>) : Promise<UsuarioRetorno>{
         data.password = await bcrypt.hash(data.password, saltRounds)
         const user = repo.create(data)
         await repo.save(user)
         //consultar o usuario criado
-        const newUser = await repo.findOne({
-            where: {id: user.id}
+       /*  const newUser = await repo.findOne({
+            where: {id: user.id},
+            select: ["id", "nome", "email"]
         })
+        return newUser; */
+        return {
+            id: user.id,
+            nome: user.nome,
+            email: user.email,
+        };
     },
 
     async update(id : number, data: Partial<Usuario>): Promise<Usuario | null>{
