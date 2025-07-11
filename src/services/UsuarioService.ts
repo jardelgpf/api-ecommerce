@@ -14,7 +14,9 @@ type UsuarioRetorno = {
 export const UsuarioService    = {
 
     async getAll() : Promise<Usuario[]>{
-        return await repo.find()
+        return await repo.find({
+            select: ["id", "nome", "email"]
+        })
     },
 
     async getOne(id: number) : Promise<Usuario | null>{
@@ -38,14 +40,18 @@ export const UsuarioService    = {
         };
     },
 
-    async update(id : number, data: Partial<Usuario>): Promise<Usuario | null>{
+    async update(id : number, data: Partial<Usuario>): Promise<UsuarioRetorno | null>{
         const user = await repo.findOneBy({ id })
         if(!user)
             return null
 
         repo.merge(user, data)
         await repo.save(user)
-        return user
+          return {
+            id: user.id,
+            nome: user.nome,
+            email: user.email,
+        };
     },
 
     async delete(id: number) : Promise<Usuario | null>{
